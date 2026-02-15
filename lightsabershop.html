@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperdrive Gear - Droid Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #0f0f0f;
+        }
+
+        /* ========================================
+           🎯 START NAVBAR CSS - COPY FROM HERE
+           ======================================== */
+        
+        /* Top Bar */
+        .top-bar {
+            background-color: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .top-bar {
+            background-color: #1a1a1a;
+            border-bottom-color: #333;
+        }
+
+        .top-bar .social-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar .social-icons i {
+            cursor: pointer;
+            transition: color 0.3s;
+            color: #000;
+            font-size: 20px;
+        }
+
+        body.dark-mode .top-bar .social-icons i {
+            color: #fff;
+        }
+
+        .top-bar .social-icons i:hover {
+            color: #667eea;
+        }
+
+        .promo-text {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .promo-text {
+            color: #999;
+        }
+
+        .promo-text i {
+            font-size: 10px;
+            margin: 0 10px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #fff;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        body.dark-mode .navbar {
+            background-color: #1a1a1a;
+            border-bottom-color: #333;
+        }
+
+        .logo {
+            border: 2px solid #000;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.3;
+            cursor: pointer;
+        }
+
+        body.dark-mode .logo {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .nav-menu li a {
+            color: #fff;
+        }
+
+        .nav-menu li a:hover {
+            color: #667eea;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+            font-size: 20px;
+        }
+
+        .nav-icons i,
+        .nav-icons a {
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        body.dark-mode .nav-icons i,
+        body.dark-mode .nav-icons a {
+            color: #fff;
+        }
+
+        .nav-icons i:hover,
+        .nav-icons a:hover {
+            color: #667eea;
+        }
+
+        /* ========================================
+           🎯 END NAVBAR CSS - COPY UNTIL HERE
+           ======================================== */
+
+        /* Shop Container */
+        .shop-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            animation: fadeInDown 0.6s ease;
+        }
+
+        body.dark-mode .filter-section {
+            background: linear-gradient(135deg, #4a5dc9 0%, #5a3a82 100%);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-dropdown:hover {
+            background-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            font-size: 14px;
+        }
+
+        .search-box::placeholder {
+            color: #999;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Product Card */
+        .product-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            animation: slideUp 0.6s ease backwards;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+        .product-card:nth-child(7) { animation-delay: 0.7s; }
+        .product-card:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body.dark-mode .product-card {
+            background: #1a1a1a;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .product-card:hover {
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #4facfe);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-card:nth-child(even) .product-image-wrapper {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .product-card:nth-child(3n) .product-image-wrapper {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        body.dark-mode .product-name {
+            color: #fff;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .product-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .product-price {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .price-value {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-add-to-cart {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-to-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-add-to-cart i {
+            font-size: 14px;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(102, 126, 234, 0.8);
+            }
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+        }
+
+        .dark-mode-toggle i {
+            font-size: 26px;
+            color: #fff;
+        }
+
+        /* Detail Page */
+        .detail-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .detail-page.active {
+            display: block;
+        }
+
+        .detail-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 20px;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        body.dark-mode .detail-container {
+            background: #1a1a1a;
+        }
+
+        .close-detail {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-detail:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .detail-image-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 15px;
+            padding: 0;
+            min-height: 500px;
+            overflow: hidden;
+        }
+
+        .detail-image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .detail-info-section {
+            padding: 20px 0;
+        }
+
+        .detail-category {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .detail-name {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        body.dark-mode .detail-name {
+            color: #fff;
+        }
+
+        .detail-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .detail-description {
+            color: #999;
+        }
+
+        .detail-price-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .detail-price-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .detail-price-value {
+            color: #fff;
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .detail-specs {
+            margin-bottom: 30px;
+        }
+
+        .detail-specs h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        body.dark-mode .detail-specs h3 {
+            color: #fff;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .spec-item {
+            border-bottom-color: #333;
+        }
+
+        .spec-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        body.dark-mode .spec-label {
+            color: #999;
+        }
+
+        .spec-value {
+            color: #333;
+            font-weight: 700;
+        }
+
+        body.dark-mode .spec-value {
+            color: #fff;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-detail-cart {
+            flex: 1;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-detail-cart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .detail-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .detail-image-section {
+                min-height: 350px;
+            }
+
+            .detail-name {
+                font-size: 28px;
+            }
+
+            .detail-price-value {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- ========================================
+         🎯 START NAVBAR HTML - COPY FROM HERE
+         ======================================== -->
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="social-icons">
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-youtube"></i>
+            <i class="fab fa-tiktok"></i>
+            <i class="fab fa-x-twitter"></i>
+        </div>
+        <div class="promo-text">
+            <i class="fas fa-chevron-left"></i>
+            DISKON 5% OTOMATIS
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div style="width: 150px;"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='hyperdrive-gear.html'">
+            Hyperdrive<br>Gear
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="lightsabershop.html">LIGHTSABER</a></li>
+            <li><a href="SHOP.HTML">DROID</a></li>
+            <li><a href="furniture.html">FURNITURE</a></li>
+            <li><a href="crystal.html">CRYSTAL</a></li>
+            <li><a href="PRODUKRAT.html">PRODUCT RATING</a></li>
+        </ul>
+        <div class="nav-icons">
+            <i class="fas fa-search"></i>
+            <a href="signup.html"><i class="far fa-user"></i></a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </nav>
+
+    <!-- ========================================
+         🎯 END NAVBAR HTML - COPY UNTIL HERE
+         ======================================== -->
+
+    <div class="shop-container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-header">
+                <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+                <a href="cart.html" style="margin-left: auto; color: white; text-decoration: none; font-size: 16px;">
+                    <i class="fas fa-shopping-cart"></i> Keranjang (<span id="cart-count">0</span>)
+                </a>
+            </div>
+            <div class="filter-controls">
+                <select class="filter-dropdown" id="vendorFilter">
+                    <option value="">Semua Vendor</option>
+                    <option value="astromech">Astromech Series</option>
+                    <option value="protocol">Protocol Droids</option>
+                    <option value="tactical">Tactical Droids</option>
+                </select>
+                <select class="filter-dropdown" id="priceFilter">
+                    <option value="">Urutkan Harga</option>
+                    <option value="low">Harga Terendah</option>
+                    <option value="high">Harga Tertinggi</option>
+                </select>
+                <input type="text" class="search-box" id="searchBox" placeholder="Cari droid...">
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Detail Page -->
+    <div class="detail-page" id="detailPage">
+        <div class="detail-container">
+            <button class="close-detail" onclick="closeDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="detail-content" id="detailContent">
+                <!-- Detail content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Products Data
+        const products = [
+            {
+                id: 1,
+                name: 'LUKE SKYWALKER',
+                category: 'Astromech Series',
+                vendor: 'astromech',
+                price: 8500000,
+                icon: 'fa-robot',
+                image: 'All.jpg',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                description: 'Droid astromech legendaris yang pernah melayani Padmé Amidala, Anakin Skywalker, dan Luke Skywalker. Memiliki kemampuan navigasi luar angkasa dan perbaikan kapal yang luar biasa.',
+                specs: {
+                    'Tipe': 'R2-series astromech',
+                    'Tinggi': '1.09 meter',
+                    'Manufaktur': 'Industrial Automaton',
+                    'Warna': 'Putih, Biru, Perak'
+                }
+            },
+            {
+                id: 2,
+                name: 'DARTH VADER',
+                category: 'Astromech Series',
+                vendor: 'astromech',
+                price: 12750000,
+                icon: 'fa-circle',
+                image: 'SUPERNEOX® Darth Vader EP5 Lightsaber VS_ Vader SE Saber.jpg',
+                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                description: 'Droid astromech berbentuk bola dari era New Republic. Dikenal karena kepribadiannya yang ceria dan loyal kepada Poe Dameron.',
+                specs: {
+                    'Tipe': 'BB-series astromech',
+                    'Tinggi': '0.67 meter',
+                    'Manufaktur': 'Industrial Automaton',
+                    'Warna': 'Putih, Oranye'
+                }
+            },
+            {
+                id: 3,
+                name: 'CAL KESTIS',
+                category: 'Protocol Droids',
+                vendor: 'protocol',
+                price: 9450000,
+                icon: 'fa-user-robot',
+                image: 'Screenshot 2026-02-14 203014.png',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                description: 'Droid protokol yang fasih berbicara lebih dari 6 juta bentuk komunikasi. Teman setia R2-D2 dan ahli dalam etiket dan hubungan antar-spesies.',
+                specs: {
+                    'Tipe': '3PO-series protocol',
+                    'Tinggi': '1.67 meter',
+                    'Manufaktur': 'Cybot Galactica',
+                    'Warna': 'Emas (Gold plated)'
+                }
+            },
+            {
+                id: 4,
+                name: 'OBI-WAN',
+                category: 'Tactical Droids',
+                vendor: 'tactical',
+                price: 13150000,
+                icon: 'fa-android',
+                image: 'In this months Saber Spotlight, we take a closer look at Starkiller’s first saber the weapon that began his journey! 🔥__We already had this saber on sale but now we are offering an further 10% off automati.jpg',
+                gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+                description: 'Bekas droid keamanan Imperial yang diprogram ulang untuk melayani Rebellion. Dikenal karena keberaniannya dan selera humor yang kering.',
+                specs: {
+                    'Tipe': 'KX-series security',
+                    'Tinggi': '2.16 meter',
+                    'Manufaktur': 'Arakyd Industries',
+                    'Warna': 'Hitam, Merah'
+                }
+            },
+            {
+                id: 5,
+                name: 'ANAKIN SKYWALKER',
+                category: 'Astromech Series',
+                vendor: 'astromech',
+                price: 8750000,
+                icon: 'fa-compact-disc',
+                image: 'Anakin EP3 - Baselit Pro.jpg',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                description: 'Droid roda kecil dengan kepala berbentuk cone. Ditemukan di kapal Ochi dan menjadi companion Rey. Pemalu tapi penuh semangat.',
+                specs: {
+                    'Tipe': 'D-O wheel droid',
+                    'Tinggi': '0.43 meter',
+                    'Manufaktur': 'Unknown',
+                    'Warna': 'Oranye, Putih'
+                }
+            },
+            {
+                id: 6,
+                name: 'AHSOKA',
+                category: 'Tactical Droids',
+                vendor: 'tactical',
+                price: 16900000,
+                icon: 'fa-skull-crossbones',
+                image: 'Ahsoka - RGB Smoothswing.jpg',
+                gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                description: 'Droid assassin IG-series yang diprogram ulang menjadi droid perawat dan pelindung. Memiliki kemampuan tempur tingkat tinggi dan protokol self-destruct.',
+                specs: {
+                    'Tipe': 'IG-series assassin',
+                    'Tinggi': '1.88 meter',
+                    'Manufaktur': 'Holowan Laboratories',
+                    'Warna': 'Abu-abu Metalik'
+                }
+            },
+            {
+                id: 7,
+                name: 'MACE WINDU',
+                category: 'Protocol Droids',
+                vendor: 'protocol',
+                price: 11250000,
+                icon: 'fa-rocket',
+                image: 'Halloween Lightsaber Sale 2025 at NEO Sabers.jpg',
+                gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                description: 'Droid pilot yang unik dengan kesadaran diri tinggi dan kepercayaan kuat pada hak-hak droid. Co-pilot dari Lando Calrissian di Millennium Falcon.',
+                specs: {
+                    'Tipe': 'Custom-built pilot',
+                    'Tinggi': '1.79 meter',
+                    'Manufaktur': 'Self-modified',
+                    'Warna': 'Perak, Hitam'
+                }
+            },
+            {
+                id: 8,
+                name: 'MANDALORION',
+                category: 'Astromech Series',
+                vendor: 'astromech',
+                price: 10500000,
+                icon: 'fa-binoculars',
+                image: 'XenoSaber Xenopixel 3_0 Light Saber, The Dark Series Black Dueling Force Elite Mandalore Light Saber, Motion Control Smooth Swing Light Saber 34 Sound Fonts, Infinite Color, Rechargeable Metal Hilt.jpg',
+                gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                description: 'Droid eksplorasi kecil yang ditemukan di planet Bogano. Teman setia Cal Kestis dengan kemampuan scanning, hacking, dan healing stim.',
+                specs: {
+                    'Tipe': 'BD-unit explorer',
+                    'Tinggi': '0.39 meter',
+                    'Manufaktur': 'Unknown',
+                    'Warna': 'Putih, Merah'
+                }
+            }
+        ];
+
+        let currentProducts = [...products];
+
+        function generateProducts(productsToShow = currentProducts) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            productsToShow.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.onclick = () => openDetail(product.id);
+                
+                card.innerHTML = `
+                    <div class="product-image-wrapper" style="background: ${product.gradient}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price-row">
+                            <div class="product-price">
+                                <span class="price-label">From</span>
+                                <span class="price-value">Rp ${product.price.toLocaleString('id-ID')}</span>
+                            </div>
+                            <button class="btn-add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">
+                                <i class="fas fa-shopping-cart"></i>
+                                Tambah
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function openDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div class="detail-image-section" style="background: ${product.gradient}">
+                    <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                </div>
+                <div class="detail-info-section">
+                    <div class="detail-category">${product.category}</div>
+                    <h1 class="detail-name">${product.name}</h1>
+                    <p class="detail-description">${product.description}</p>
+                    
+                    <div class="detail-price-section">
+                        <div class="detail-price-label">Harga Mulai Dari:</div>
+                        <div class="detail-price-value">Rp ${product.price.toLocaleString('id-ID')}</div>
+                    </div>
+
+                    <div class="detail-specs">
+                        <h3>Spesifikasi</h3>
+                        ${Object.entries(product.specs).map(([key, value]) => `
+                            <div class="spec-item">
+                                <span class="spec-label">${key}</span>
+                                <span class="spec-value">${value}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="detail-actions">
+                        <button class="btn-detail-cart" onclick="addToCart(${product.id})">
+                            <i class="fas fa-shopping-cart"></i>
+                            Tambah ke Keranjang
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('detailPage').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            document.getElementById('detailPage').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalCount;
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    category: product.category,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${product.name} telah ditambahkan ke keranjang!`);
+        }
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const icon = darkModeToggle.querySelector('i');
+        body.className = localStorage.getItem('theme') || 'light-mode';
+        icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('light-mode');
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', body.className);
+            icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
+        document.getElementById('vendorFilter').addEventListener('change', filterProducts);
+        document.getElementById('priceFilter').addEventListener('change', filterProducts);
+        document.getElementById('searchBox').addEventListener('input', filterProducts);
+
+        function filterProducts() {
+            const vendorFilter = document.getElementById('vendorFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+
+            let filtered = [...products];
+
+            if (vendorFilter) {
+                filtered = filtered.filter(p => p.vendor === vendorFilter);
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    p.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (priceFilter === 'low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (priceFilter === 'high') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            currentProducts = filtered;
+            generateProducts(filtered);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetail();
+            }
+        });
+
+        generateProducts();
+        updateCartCount();
+    </script>
+</body>
+</html>

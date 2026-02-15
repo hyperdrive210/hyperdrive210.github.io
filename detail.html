@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk - Lightsaber Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .cart-icon {
+            position: absolute;
+            right: 0;
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .cart-icon:hover {
+            background-color: #0052a3;
+        }
+
+        .cart-badge {
+            background-color: #ff4444;
+            padding: 2px 8px;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0052a3;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .product-detail {
+            background-color: white;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .product-image-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .main-image .placeholder {
+            font-size: 120px;
+            color: #ccc;
+        }
+
+        .thumbnail-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .thumbnail {
+            height: 100px;
+            background-color: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .thumbnail:hover {
+            border-color: #0066cc;
+        }
+
+        .thumbnail .placeholder {
+            font-size: 40px;
+            color: #ccc;
+        }
+
+        .product-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-vendor {
+            font-size: 14px;
+            color: #0066cc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .product-title {
+            font-size: 2em;
+            font-weight: 600;
+            color: #222;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #222;
+            margin: 10px 0;
+        }
+
+        .price-label {
+            font-size: 0.4em;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .product-description {
+            line-height: 1.8;
+            color: #555;
+            margin: 20px 0;
+        }
+
+        .product-specs {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .product-specs h3 {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .spec-value {
+            color: #222;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .quantity-selector label {
+            font-weight: 600;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .add-to-cart-btn {
+            flex: 2;
+            padding: 16px;
+            background-color: white;
+            color: black;
+            border: 2px solid black;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #0052a3;
+        }
+
+        .buy-now-btn {
+            flex: 1;
+            padding: 16px;
+            background-color: #28a745;
+            color: white;
+            border: 2px solid black;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-btn:hover {
+            background-color: #218838;
+        }
+
+        .product-features {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .product-features h3 {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-list li {
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        @media (max-width: 968px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* navbar */
+
+                /* Top Banner */
+        .top-banner {
+            background-color: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .top-banner .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Social Icons - Left Side */
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .social-icons a {
+            color: #333;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icons a:hover {
+            color: #0066cc;
+        }
+
+        /* Banner Content - Center */
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .banner-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .banner-nav button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            padding: 0 5px;
+        }
+
+        .banner-nav button:hover {
+            color: #000;
+        }
+
+        .banner-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            padding: 0 8px;
+        }
+
+        .banner-nav-btn:hover {
+            color: #000;
+        }
+
+        /* Header/Navbar */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #000;
+            border: 2px solid #000;
+            padding: 8px 15px;
+            border-radius: 25px;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .nav-icons button:hover {
+            opacity: 0.6;
+        }
+
+        .nav-icons svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .top-banner {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        
+        .dark-mode .top-banner .container {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .social-icons a {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .social-icons a:hover {
+            color: #4da6ff;
+        }
+        
+        .dark-mode header {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        
+        .dark-mode .logo {
+            color: #e0e0e0;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .dark-mode .nav-links a {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .nav-links a:hover {
+            color: #4da6ff;
+        }
+        
+        .dark-mode .header {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        
+        .dark-mode .cart-icon {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .dark-mode .header h1 {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .header p {
+            color: #aaa;
+        }
+        
+        .dark-mode .product-detail {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+        }
+        
+        .dark-mode .main-image {
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+        }
+        
+        .dark-mode .thumbnail {
+            background-color: #2d2d2d;
+            border: 2px solid #444;
+        }
+        
+        .dark-mode .thumbnail:hover {
+            border-color: #4da6ff;
+        }
+        
+        .dark-mode .product-vendor {
+            color: #4da6ff;
+        }
+        
+        .dark-mode .product-title {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .product-price {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .product-description {
+            color: #ccc;
+        }
+        
+        .dark-mode .product-specs {
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+        }
+        
+        .dark-mode .product-specs h3 {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .spec-item {
+            border-bottom: 1px solid #444;
+        }
+        
+        .dark-mode .spec-label {
+            color: #aaa;
+        }
+        
+        .dark-mode .spec-value {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .quantity-controls {
+            border: 1px solid #444;
+        }
+        
+        .dark-mode .quantity-btn {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+        }
+        
+        .dark-mode .quantity-btn:hover {
+            background-color: #444;
+        }
+        
+        .dark-mode .quantity-input {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border-left: 1px solid #444;
+            border-right: 1px solid #444;
+        }
+        
+        .dark-mode .add-to-cart-btn {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .dark-mode .add-to-cart-btn:hover {
+            background-color: #4da6ff;
+        }
+        
+        .dark-mode .product-features {
+            border-top: 1px solid #444;
+        }
+        
+        .dark-mode .product-features h3 {
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .feature-list li {
+            color: #ccc;
+        }
+        
+        /* Dark Mode Toggle Button */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: background-color 0.3s;
+        }
+        
+        .dark-mode-toggle:hover {
+            background-color: #444;
+        }
+        
+        .dark-mode .dark-mode-toggle {
+            background-color: #555;
+        }
+        
+        .dark-mode .dark-mode-toggle:hover {
+            background-color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+     <!-- Top Banner -->
+    <div class="top-banner">
+        <div class="container">
+            <!-- Social Icons - Left -->
+            <div class="social-icons">
+                <a href="#" title="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                </a>
+                <a href="#" title="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+                <a href="#" title="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                </a>
+                <a href="#" title="TikTok">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                    </svg>
+                </a>
+                <a href="#" title="X (Twitter)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Banner Text with Navigation - Center -->
+            <div class="banner-content">
+                <button class="banner-nav-btn" onclick="prevBanner()">‹</button>
+                <span id="banner-text">PENGIRIMAN KE SELURUH DUNIA</span>
+                <button class="banner-nav-btn" onclick="nextBanner()">›</button>
+            </div>
+
+            <!-- Empty div for spacing -->
+            <div style="width: 200px;"></div>
+        </div>
+    </div>
+
+
+     <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="nav-left">
+                    <a href="#" class="logo">Hyperdrive<br>Gear</a>
+
+                    <ul class="nav-links">
+                        <li><a href="#rumah">Rumah</a></li>
+                        <li><a href="#pedang">Pedang</a></li>
+                        <li><a href="#pisau">Pisau</a></li>
+                        <li><a href="#casis">Casis</a></li>
+                        <li><a href="#aksesoris">Aksesoris</a></li>
+                        <li><a href="#alat-peraga">Alat peraga</a></li>
+                        <li><a href="#izin">Izin</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-icons">
+                    <!-- Search Icon -->
+                    
+                    <button title="Search">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+
+                    <!-- User Profile Icon -->
+                    <a href="login.html" title="Account">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+
+                    </button>
+
+                    <!-- Shopping Cart Icon -->
+                    <a href="cart.html" title="Cart">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </a>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="product-detail">
+            <!-- Image Section -->
+            <div class="product-image-section">
+                <div class="main-image">
+                    <div class="placeholder">⚔️</div>
+                </div>
+                <div class="thumbnail-gallery">
+                    <div class="thumbnail">
+                        <div class="placeholder">⚔️</div>
+                    </div>
+                    <div class="thumbnail">
+                        <div class="placeholder">⚔️</div>
+                    </div>
+                    <div class="thumbnail">
+                        <div class="placeholder">⚔️</div>
+                    </div>
+                    <div class="thumbnail">
+                        <div class="placeholder">⚔️</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="product-info-section">
+                <div class="product-vendor">ELF SABERS</div>
+                <h1 class="product-title" id="productName">Luke Rescue Lightsaber</h1>
+                
+                <div class="product-price">
+                    <span class="price-label">From</span> <span id="productPrice">Rp 5.350.000,00</span>
+                </div>
+
+                <div class="product-description">
+                    <p>Lightsaber premium dengan kualitas terbaik dari ELF SABERS. Dibuat dengan material berkualitas tinggi dan detail yang sangat akurat. Cocok untuk koleksi maupun untuk cosplay dan duel.</p>
+                    <p>Setiap lightsaber dilengkapi dengan soundboard premium, LED yang terang, dan desain yang authentic sesuai dengan karakter aslinya.</p>
+                </div>
+
+                <div class="product-specs">
+                    <h3>Spesifikasi Produk</h3>
+                    <div class="spec-item">
+                        <span class="spec-label">Material</span>
+                        <span class="spec-value">Aluminium Alloy</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Panjang</span>
+                        <span class="spec-value">28-30 cm (Hilt)</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Soundboard</span>
+                        <span class="spec-value">Proffie / Xenopixel</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">LED</span>
+                        <span class="spec-value">RGB Neopixel</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Garansi</span>
+                        <span class="spec-value">1 Tahun</span>
+                    </div>
+                </div>
+
+                <div class="quantity-selector">
+                    <label for="quantity">Jumlah:</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity()">−</button>
+                        <input type="number" id="quantity" class="quantity-input" value="1" min="1" readonly>
+                        <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="add-to-cart-btn" onclick="addToCart()">🛒 Tambah ke Keranjang</button>
+                    <button class="buy-now-btn" onclick="buyNow()">Beli Sekarang</button>
+                </div>
+
+                <div class="product-features">
+                    <h3>Fitur Unggulan</h3>
+                    <ul class="feature-list">
+                        <li>Soundboard premium dengan berbagai sound effect</li>
+                        <li>LED RGB dengan brightness yang dapat diatur</li>
+                        <li>Material aluminium yang kuat dan tahan lama</li>
+                        <li>Detail akurat sesuai film asli</li>
+                        <li>Cocok untuk duel dan cosplay</li>
+                        <li>Include rechargeable battery dan charger</li>
+                        <li>Garansi resmi 1 tahun</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <script>
+        // Get product info from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('product');
+
+        // Product data
+        const products = {
+            'luke-rescue': {
+                name: 'Luke Rescue',
+                vendor: 'ELF SABERS',
+                price: 5350000,
+                priceText: 'Rp 5.350.000,00'
+            },
+            'vader-mpp': {
+                name: 'Vader MPP (Anakin & ESB)',
+                vendor: 'ELF SABERS',
+                price: 9450000,
+                priceText: 'Rp 9.450.000,00'
+            },
+            'ky-lightsaber': {
+                name: 'K.Y. Lightsaber Sith Killer (Jedi Killer silver version)',
+                vendor: "JAWA'S DEPOT",
+                price: 16750000,
+                priceText: 'Rp 16.750.000,00'
+            },
+            'thrawn-hunters': {
+                name: 'Thrawn Hunters Ahsoka with custom metal crystal chambers (KR Sabers)',
+                vendor: "JAWA'S DEPOT",
+                price: 12000000,
+                priceText: 'Rp 12.000.000,00'
+            },
+            'arcann': {
+                name: 'Arcann',
+                vendor: 'ELF SABERS',
+                price: 13150000,
+                priceText: 'Rp 13.150.000,00'
+            },
+            'darth-malgus': {
+                name: 'Darth Malgus',
+                vendor: 'ELF SABERS',
+                price: 8750000,
+                priceText: 'Rp 8.750.000,00'
+            },
+            'orgus-din': {
+                name: 'Orgus Din',
+                vendor: 'ELF SABERS',
+                price: 11250000,
+                priceText: 'Rp 11.250.000,00'
+            },
+            'sabine-wren': {
+                name: 'Sabine Wren Lightsaber',
+                vendor: 'ELF SABERS',
+                price: 8100000,
+                priceText: 'Rp 8.100.000,00'
+            }
+        };
+
+        // Current product
+        let currentProduct = null;
+
+        // Update product info based on URL
+        if (productId && products[productId]) {
+            currentProduct = products[productId];
+            document.getElementById('productName').textContent = currentProduct.name;
+            document.querySelector('.product-vendor').textContent = currentProduct.vendor;
+            document.getElementById('productPrice').textContent = currentProduct.priceText;
+        }
+
+        // Get cart from localStorage
+        function getCart() {
+            const cart = localStorage.getItem('lightsaberCart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        // Save cart to localStorage
+        function saveCart(cart) {
+            localStorage.setItem('lightsaberCart', JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        // Update cart badge
+        function updateCartBadge() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = totalItems;
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function addToCart() {
+            if (!currentProduct || !productId) {
+                alert('❌ Produk tidak ditemukan!');
+                return;
+            }
+
+            const quantity = parseInt(document.getElementById('quantity').value);
+            let cart = getCart();
+            
+            // Check if product already in cart
+            const existingIndex = cart.findIndex(item => item.id === productId);
+            
+            if (existingIndex > -1) {
+                // Update quantity
+                cart[existingIndex].quantity += quantity;
+                alert('✅ Jumlah ' + currentProduct.name + ' di keranjang ditambah sebanyak ' + quantity + '!');
+            } else {
+                // Add new item
+                cart.push({
+                    id: productId,
+                    name: currentProduct.name,
+                    vendor: currentProduct.vendor,
+                    price: currentProduct.price,
+                    quantity: quantity
+                });
+                alert('✅ ' + quantity + 'x ' + currentProduct.name + ' berhasil ditambahkan ke keranjang!');
+            }
+            
+            saveCart(cart);
+        }
+
+        function buyNow() {
+            if (!currentProduct) {
+                alert('❌ Produk tidak ditemukan!');
+                return;
+            }
+
+            // Add to cart first
+            addToCart();
+            
+            // Redirect to cart page
+            setTimeout(() => {
+                window.location.href = 'cart.html';
+            }, 500);
+        }
+
+        // Initialize cart badge on page load
+        updateCartBadge();
+        
+        // Dark mode toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            
+            // Check for saved theme preference
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                
+                // Toggle icon and save preference
+                if (body.classList.contains('dark-mode')) {
+                    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
