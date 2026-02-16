@@ -12,14 +12,22 @@
         }
 
         body {
-            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 25%, #16213e 50%, #0f1419 75%, #0a0e27 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            cursor: none;
+        }
+
+        /* Disable expensive animations on low-end devices */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         @keyframes gradientShift {
@@ -27,56 +35,85 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(138, 116, 249, 0.8);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease;
-            mix-blend-mode: difference;
-        }
+        /* Custom Cursor - Only on Desktop */
+        @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
 
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(138, 116, 249, 0.4);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.3s ease;
-            mix-blend-mode: difference;
-        }
+            .cursor {
+                width: 20px;
+                height: 20px;
+                border: 2px solid rgba(138, 116, 249, 0.8);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.15s ease;
+                mix-blend-mode: difference;
+                will-change: transform;
+            }
 
-        .cursor.hover {
-            transform: scale(1.5);
-            background: rgba(138, 116, 249, 0.3);
-        }
+            .cursor-follower {
+                width: 40px;
+                height: 40px;
+                border: 1px solid rgba(138, 116, 249, 0.4);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9998;
+                transition: transform 0.3s ease;
+                mix-blend-mode: difference;
+                will-change: transform;
+            }
 
-        .cursor-follower.hover {
-            transform: scale(1.8);
-        }
+            .cursor.hover {
+                transform: scale(1.5);
+                background: rgba(138, 116, 249, 0.3);
+            }
 
-        /* Magic Trail */
-        .trail {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(138, 116, 249, 0.8) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 9997;
-            animation: trailFade 0.8s ease-out forwards;
-        }
+            .cursor-follower.hover {
+                transform: scale(1.8);
+            }
 
-        @keyframes trailFade {
-            to {
-                transform: scale(0);
+            .trail {
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(138, 116, 249, 0.8) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: 9997;
+                animation: trailFade 0.8s ease-out forwards;
+                will-change: transform, opacity;
+            }
+
+            @keyframes trailFade {
+                to {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+            }
+
+            .glow-effect {
+                position: fixed;
+                width: 500px;
+                height: 500px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(138, 116, 249, 0.2) 0%, transparent 70%);
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: opacity 0.3s;
                 opacity: 0;
+                z-index: 1;
+                will-change: transform, opacity;
+            }
+        }
+
+        /* Hide cursor elements on mobile */
+        @media (max-width: 768px) {
+            .cursor, .cursor-follower, .glow-effect, .trail {
+                display: none !important;
             }
         }
 
@@ -93,51 +130,41 @@
             z-index: 1;
         }
 
-        /* Cursor Glow Effect */
-        .glow-effect {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(138, 116, 249, 0.2) 0%, transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s;
-            opacity: 0;
-            z-index: 1;
-        }
-
         /* Navbar */
         nav {
             position: fixed;
-            top: 30px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50px;
-            padding: 8px;
+            padding: 6px;
             display: flex;
             gap: 0;
             z-index: 1000;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 95%;
         }
 
         .nav-item {
             position: relative;
-            padding: 12px 28px;
+            padding: 10px 20px;
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             border-radius: 40px;
             transition: color 0.3s ease;
             font-weight: 500;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             z-index: 2;
+            white-space: nowrap;
         }
 
-        .nav-item:hover {
+        .nav-item:hover,
+        .nav-item:active {
             color: #fff;
         }
 
@@ -152,6 +179,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
             box-shadow: 0 4px 20px rgba(138, 116, 249, 0.4);
+            will-change: transform;
         }
 
         /* Coming Soon Section */
@@ -167,17 +195,17 @@
         }
 
         .coming-soon-title {
-            font-size: 5rem;
+            font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 800;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.2em;
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #ff6b6b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             text-transform: uppercase;
             animation: titlePulse 3s ease-in-out infinite;
-            text-shadow: 0 0 40px rgba(255, 107, 107, 0.3);
+            text-align: center;
         }
 
         @keyframes titlePulse {
@@ -194,8 +222,10 @@
         /* Countdown Timer */
         .countdown {
             display: flex;
-            gap: 40px;
-            margin-bottom: 80px;
+            gap: clamp(15px, 4vw, 40px);
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .countdown-item {
@@ -206,7 +236,7 @@
         }
 
         .countdown-value {
-            font-size: 6rem;
+            font-size: clamp(2.5rem, 8vw, 6rem);
             font-weight: 800;
             background: linear-gradient(135deg, #8a74f9 0%, #a78bfa 50%, #8a74f9 100%);
             -webkit-background-clip: text;
@@ -214,9 +244,8 @@
             background-clip: text;
             letter-spacing: 0.1em;
             line-height: 1;
-            text-shadow: 0 0 40px rgba(138, 116, 249, 0.5);
             animation: numberGlow 2s ease-in-out infinite alternate;
-            font-family: 'Orbitron', monospace;
+            font-family: 'Courier New', monospace;
         }
 
         @keyframes numberGlow {
@@ -225,10 +254,10 @@
         }
 
         .countdown-separator {
-            font-size: 6rem;
+            font-size: clamp(2.5rem, 8vw, 6rem);
             color: rgba(138, 116, 249, 0.5);
             font-weight: 800;
-            margin: 0 -20px;
+            margin: 0 -10px;
             animation: blink 1.5s ease-in-out infinite;
         }
 
@@ -238,24 +267,26 @@
         }
 
         .countdown-label {
-            font-size: 1rem;
+            font-size: clamp(0.7rem, 2vw, 1rem);
             color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            margin-top: 15px;
+            margin-top: 10px;
             font-weight: 600;
         }
 
         /* Social Icons */
         .social-container {
             display: flex;
-            gap: 20px;
-            margin-top: 40px;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .social-icon {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -263,9 +294,10 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .social-icon::before {
@@ -280,50 +312,58 @@
             transition: opacity 0.3s;
         }
 
-        .social-icon:hover::before {
+        .social-icon:hover::before,
+        .social-icon:active::before {
             opacity: 1;
         }
 
-        .social-icon:hover {
-            transform: translateY(-8px) scale(1.1);
+        .social-icon:hover,
+        .social-icon:active {
+            transform: translateY(-5px) scale(1.05);
             border-color: rgba(138, 116, 249, 0.5);
-            box-shadow: 0 15px 35px rgba(138, 116, 249, 0.4);
+            box-shadow: 0 10px 25px rgba(138, 116, 249, 0.4);
         }
 
         .social-icon svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: #fff;
             position: relative;
             z-index: 1;
             transition: transform 0.3s;
         }
 
-        .social-icon:hover svg {
-            transform: scale(1.2) rotate(5deg);
+        .social-icon:hover svg,
+        .social-icon:active svg {
+            transform: scale(1.1);
         }
 
-        .social-icon.whatsapp:hover {
+        .social-icon.whatsapp:hover,
+        .social-icon.whatsapp:active {
             background: linear-gradient(135deg, #25D366, #128C7E);
         }
 
-        .social-icon.tiktok:hover {
+        .social-icon.tiktok:hover,
+        .social-icon.tiktok:active {
             background: linear-gradient(135deg, #000000, #ee1d52);
         }
 
-        .social-icon.instagram:hover {
+        .social-icon.instagram:hover,
+        .social-icon.instagram:active {
             background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
-        .social-icon.x:hover {
+        .social-icon.x:hover,
+        .social-icon.x:active {
             background: linear-gradient(135deg, #000000, #333333);
         }
 
-        .social-icon.youtube:hover {
+        .social-icon.youtube:hover,
+        .social-icon.youtube:active {
             background: linear-gradient(135deg, #ff0000, #cc0000);
         }
 
-        /* Floating particles */
+        /* Reduce particles on mobile */
         .particle {
             position: fixed;
             width: 2px;
@@ -333,6 +373,7 @@
             pointer-events: none;
             animation: float linear infinite;
             z-index: 1;
+            will-change: transform, opacity;
         }
 
         @keyframes float {
@@ -348,7 +389,6 @@
             }
         }
 
-        /* Particle Burst */
         .burst-particle {
             position: fixed;
             width: 4px;
@@ -356,92 +396,18 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 9996;
-        }
-
-        /* Responsive */
-        @media (max-width: 968px) {
-            .coming-soon-title {
-                font-size: 3rem;
-                letter-spacing: 0.2em;
-            }
-
-            .countdown {
-                gap: 20px;
-            }
-
-            .countdown-value {
-                font-size: 4rem;
-            }
-
-            .countdown-separator {
-                font-size: 4rem;
-                margin: 0 -10px;
-            }
-
-            nav {
-                padding: 6px;
-            }
-
-            .nav-item {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 568px) {
-            .coming-soon-title {
-                font-size: 2rem;
-                letter-spacing: 0.15em;
-            }
-
-            .countdown {
-                gap: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .countdown-value {
-                font-size: 2.5rem;
-            }
-
-            .countdown-separator {
-                font-size: 2.5rem;
-                margin: 0 -5px;
-            }
-
-            .countdown-label {
-                font-size: 0.7rem;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                width: 90%;
-            }
-
-            .nav-item {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-
-            /* Hide custom cursor on mobile */
-            body {
-                cursor: auto;
-            }
-
-            .cursor, .cursor-follower {
-                display: none;
-            }
+            will-change: transform, opacity;
         }
 
         /* Notify Button */
         .notify-btn {
-            margin-top: 40px;
-            padding: 16px 48px;
+            margin-top: 30px;
+            padding: 14px 40px;
             background: linear-gradient(135deg, #8a74f9 0%, #6b5ce7 100%);
             border: none;
             border-radius: 50px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -450,6 +416,7 @@
             letter-spacing: 0.1em;
             position: relative;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .notify-btn::before {
@@ -465,19 +432,104 @@
             transition: width 0.6s, height 0.6s;
         }
 
-        .notify-btn:hover::before {
+        .notify-btn:hover::before,
+        .notify-btn:active::before {
             width: 300px;
             height: 300px;
         }
 
-        .notify-btn:hover {
+        .notify-btn:hover,
+        .notify-btn:active {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(138, 116, 249, 0.6);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            nav {
+                top: 15px;
+                padding: 5px;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .nav-item {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+
+            .coming-soon-title {
+                letter-spacing: 0.15em;
+                margin-bottom: 30px;
+            }
+
+            .countdown {
+                gap: 10px;
+                margin-bottom: 40px;
+            }
+
+            .countdown-separator {
+                margin: 0 -5px;
+            }
+
+            .social-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .social-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .notify-btn {
+                padding: 12px 35px;
+                font-size: 14px;
+            }
+
+            /* Reduce glow on mobile */
+            .glow-bottom {
+                height: 200px;
+                opacity: 0.5;
+            }
+
+            /* Disable expensive animations on mobile */
+            .coming-soon-title,
+            .countdown-value {
+                animation: none;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 380px) {
+            .nav-item {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+
+            .social-container {
+                gap: 10px;
+            }
+
+            .notify-btn {
+                padding: 10px 30px;
+                font-size: 13px;
+            }
+        }
+
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            .coming-soon-title,
+            .countdown-value,
+            .countdown-separator,
+            body {
+                animation: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
+    <!-- Custom Cursor (Desktop only) -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -543,96 +595,117 @@
     </div>
 
     <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const cursorFollower = document.querySelector('.cursor-follower');
-        
-        let mouseX = 0;
-        let mouseY = 0;
-        let followerX = 0;
-        let followerY = 0;
+        // Detect mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        const isLowEnd = navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4;
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+        // Custom Cursor (Desktop only)
+        if (!isMobile && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
             
-            cursor.style.left = mouseX + 'px';
-            cursor.style.top = mouseY + 'px';
-        });
+            let mouseX = 0;
+            let mouseY = 0;
+            let followerX = 0;
+            let followerY = 0;
 
-        // Smooth follower animation
-        function animateFollower() {
-            const distX = mouseX - followerX;
-            const distY = mouseY - followerY;
-            
-            followerX += distX * 0.1;
-            followerY += distY * 0.1;
-            
-            cursorFollower.style.left = followerX + 'px';
-            cursorFollower.style.top = followerY + 'px';
-            
-            requestAnimationFrame(animateFollower);
-        }
-        animateFollower();
-
-        // Cursor hover effects
-        const hoverElements = document.querySelectorAll('a, button, .nav-item, .social-icon');
-        hoverElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
-                cursorFollower.classList.add('hover');
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
             });
-            
-            element.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
-                cursorFollower.classList.remove('hover');
+
+            function animateFollower() {
+                const distX = mouseX - followerX;
+                const distY = mouseY - followerY;
+                
+                followerX += distX * 0.1;
+                followerY += distY * 0.1;
+                
+                cursorFollower.style.left = followerX + 'px';
+                cursorFollower.style.top = followerY + 'px';
+                
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+
+            const hoverElements = document.querySelectorAll('a, button, .nav-item, .social-icon');
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                    cursorFollower.classList.add('hover');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                    cursorFollower.classList.remove('hover');
+                });
             });
-        });
 
-        // Magic Trail Effect
-        let trailTimeout;
-        document.addEventListener('mousemove', (e) => {
-            clearTimeout(trailTimeout);
-            trailTimeout = setTimeout(() => {
-                createTrail(e.clientX, e.clientY);
-            }, 30);
-        });
+            // Magic Trail Effect (reduced for low-end devices)
+            if (!isLowEnd) {
+                let trailTimeout;
+                let lastTrailTime = 0;
+                document.addEventListener('mousemove', (e) => {
+                    const now = Date.now();
+                    if (now - lastTrailTime < 50) return; // Throttle
+                    lastTrailTime = now;
+                    
+                    clearTimeout(trailTimeout);
+                    trailTimeout = setTimeout(() => {
+                        createTrail(e.clientX, e.clientY);
+                    }, 30);
+                });
 
-        function createTrail(x, y) {
-            const trail = document.createElement('div');
-            trail.className = 'trail';
-            trail.style.left = x + 'px';
-            trail.style.top = y + 'px';
-            document.body.appendChild(trail);
-            
-            setTimeout(() => {
-                trail.remove();
-            }, 800);
+                function createTrail(x, y) {
+                    const trail = document.createElement('div');
+                    trail.className = 'trail';
+                    trail.style.left = x + 'px';
+                    trail.style.top = y + 'px';
+                    document.body.appendChild(trail);
+                    
+                    setTimeout(() => {
+                        trail.remove();
+                    }, 800);
+                }
+            }
+
+            // Glow effect
+            const glowEffect = document.getElementById('glowEffect');
+            let glowTimeout;
+            document.addEventListener('mousemove', (e) => {
+                clearTimeout(glowTimeout);
+                glowEffect.style.left = e.clientX + 'px';
+                glowEffect.style.top = e.clientY + 'px';
+                glowEffect.style.opacity = '1';
+                
+                glowTimeout = setTimeout(() => {
+                    glowEffect.style.opacity = '0';
+                }, 100);
+            });
         }
 
-        // Glow effect follows cursor
-        const glowEffect = document.getElementById('glowEffect');
-        document.addEventListener('mousemove', (e) => {
-            glowEffect.style.left = e.clientX + 'px';
-            glowEffect.style.top = e.clientY + 'px';
-            glowEffect.style.opacity = '1';
-        });
-
-        // Particle burst on click
-        document.addEventListener('click', (e) => {
-            createParticleBurst(e.clientX, e.clientY);
-        });
+        // Particle burst (reduced on mobile/low-end)
+        if (!isMobile && !isLowEnd) {
+            document.addEventListener('click', (e) => {
+                createParticleBurst(e.clientX, e.clientY);
+            });
+        }
 
         function createParticleBurst(x, y) {
             const colors = ['#8a74f9', '#a78bfa', '#ff6b6b', '#ee5a6f'];
-            for (let i = 0; i < 20; i++) {
+            const particleCount = isMobile ? 10 : 20;
+            
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'burst-particle';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                 
-                const angle = (Math.PI * 2 * i) / 20;
+                const angle = (Math.PI * 2 * i) / particleCount;
                 const velocity = 100 + Math.random() * 100;
                 const vx = Math.cos(angle) * velocity;
                 const vy = Math.sin(angle) * velocity;
@@ -663,7 +736,7 @@
             }
         }
 
-        // Navbar slider animation
+        // Navbar slider
         const navItems = document.querySelectorAll('.nav-item');
         const navSlider = document.getElementById('navSlider');
         const navbar = document.getElementById('navbar');
@@ -678,27 +751,20 @@
             navSlider.style.top = (rect.top - navRect.top) + 'px';
         }
 
-        // Initialize slider position
         updateSlider(document.querySelector('.nav-item.active'));
 
         navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
+            const eventType = isMobile ? 'touchstart' : 'click';
+            item.addEventListener(eventType, (e) => {
                 e.preventDefault();
-                
-                // Remove active class from all items
                 navItems.forEach(navItem => navItem.classList.remove('active'));
-                
-                // Add active class to clicked item
                 item.classList.add('active');
-                
-                // Update slider position
                 updateSlider(item);
             });
         });
 
         // Countdown Timer
         function updateCountdown() {
-            // Set target date (246 days from now)
             const targetDate = new Date();
             targetDate.setDate(targetDate.getDate() + 246);
             targetDate.setHours(6, 51, 16, 0);
@@ -728,9 +794,9 @@
 
         updateCountdown();
 
-        // Create floating particles
+        // Create particles (reduced on mobile)
         function createParticles() {
-            const particleCount = 30;
+            const particleCount = isMobile ? 10 : (isLowEnd ? 15 : 30);
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
@@ -743,7 +809,7 @@
 
         createParticles();
 
-        // Notify button effect
+        // Notify button
         document.querySelector('.notify-btn').addEventListener('click', function() {
             this.textContent = 'Subscribed!';
             this.style.background = 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)';
@@ -752,6 +818,16 @@
                 this.textContent = 'Notify Me';
                 this.style.background = 'linear-gradient(135deg, #8a74f9 0%, #6b5ce7 100%)';
             }, 2000);
+        });
+
+        // Optimize resize handling
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const activeItem = document.querySelector('.nav-item.active');
+                if (activeItem) updateSlider(activeItem);
+            }, 100);
         });
     </script>
 </body>
